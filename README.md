@@ -235,3 +235,24 @@ ORDER BY delta
 | Media                                            | 7837.00     | 
 | Technology Hardware & Equipment                  | 42404.33    | 
 | Materials                                        | 82503.00    | 
+
+# 4. Other insight
+#### The heavier the weight of the products, the higher the carbon emissions produced during their manufacturing
+```sql
+SELECT
+	CASE WHEN weight_kg BETWEEN 0 AND 10 THEN 'weight_light'
+	WHEN weight_kg BETWEEN 11 AND 100 THEN 'weight_medium'
+	WHEN weight_kg > 100 THEN 'weight_heavy'
+	ELSE 'weight_medium'
+	END AS weight_group,
+	ROUND(AVG(carbon_footprint_pcf),2) AS avg_pcf
+FROM product_emissions
+GROUP BY weight_group
+ORDER BY avg_pcf
+```
+#### Kết quả
+| weight_group  | avg_pcf  | 
+| ------------: | -------: | 
+| weight_light  | 42.30    | 
+| weight_medium | 2359.36  | 
+| weight_heavy  | 43005.76 | 
